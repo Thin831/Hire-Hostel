@@ -4,6 +4,7 @@
 const
   express = require('express'),
   bodyParser = require('body-parser'),
+  requestify = require('requestify'),
   page_access_token = 'EAAic6oXIamwBALR6ydZAPt7qmxQqsza0iZBb7RtyhXpjOBZCdJuMQHExpgb54KPhFNL9pxWVO2OXxT9aScSIuGKgWIdtM3aw4m3J6kkIYiY9xlrx4NY5XtmFQtkI4KsMQjV4lQKwtSs6scV8A4z40Izt35aVI1RqPb5qh583wZDZD',
   app = express().use(bodyParser.json()); // creates express http server
 
@@ -53,6 +54,41 @@ app.post('/webhook', (req, res) => {
       // will only ever contain one message, so we get index 0
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
+      var userid = webhook_event.sender.id;
+      console.log("user id", userid);
+      if(webhook_event.message){
+      	var userinput = webhook_event.message.text;
+      	console.log("user input", userinput);
+      }
+      if(webhook_event.postback){
+      	var userbutton = webhook_event.postback.payload;
+      	console.log("user button", userbutton);
+      }
+      if (userinput == 'Hi'){
+      	requestify.post('https://graph.facebook.com/v4.0/me/messages?access_token='+page_access_token
+      	{
+      		"recipient":{
+      			"id":userid
+      		},
+      		"messages":{
+      			"attachment":{
+      				"type":"template",
+      				"payload":{
+      					"template_type":"button",
+      					"text":"Hello",
+      					"buttons":[
+      					{
+      						"type":"postback",
+      						"title":"OK",
+      						"payload":"ok"
+      					}
+      					]
+      				}
+      			}
+      		}
+      	})
+      }
+
     });
 
     // Returns a '200 OK' response to all requests
