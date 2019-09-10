@@ -70,7 +70,7 @@ app.post('/webhook', (req, res) => {
       		"recipient":{
       			"id":userid
       		},
-      		"messages":{
+      		"message":{
       			"attachment":{
       				"type":"template",
       				"payload":{
@@ -86,6 +86,10 @@ app.post('/webhook', (req, res) => {
       				}
       			}
       		}
+      	}).then(function(success){
+      		console.log('success');
+      	}).fail(function(error){
+      		console.log('error', error);
       	})
       }
 
