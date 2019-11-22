@@ -102,4 +102,21 @@ app.post('/webhook', (req, res) => {
     res.sendStatus(404);
   }
 
+
 });
+
+const { WebhookClient } = require('dialogflow-fulfillment');
+app.get('/', (req, res)=>{
+	res.send("Hello World");
+})
+app.post('/dialogflow, (req,res)=>
+	const agent = new WebhookClient({ request : req, response : res})
+	
+	function booking(agent){
+		console.log("OK")
+	}
+
+	let intentMap = new Map();
+		intentMap.set("booking", booking);
+	agent.handleRequest(intentMap);
+})
